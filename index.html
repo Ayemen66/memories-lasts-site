@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Memories</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(120deg,#000,#2b0000,#ffb6c1);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* FLOATING HEARTS */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  color:pink;
+  font-size:18px;
+  animation:floatUp 6s linear infinite;
+  opacity:0.7;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-100vh);opacity:0;}
+}
+
+/* LOCK SCREEN */
+#lock{
+  padding:30px;
+}
+
+#display{
+  font-size:32px;
+  background:#111;
+  padding:15px;
+  width:160px;
+  margin:10px auto;
+  border-radius:10px;
+  letter-spacing:5px;
+}
+
+button{
+  padding:15px;
+  margin:5px;
+  width:60px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d6d;
+  color:white;
+  box-shadow:0 0 10px pink;
+  cursor:pointer;
+}
+
+.hint{color:#ffb3c6;}
+
+.section{display:none;padding:20px;}
+.active{display:block;}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  padding:20px;
+  margin:10px auto;
+  max-width:500px;
+  border-radius:15px;
+  border:1px solid pink;
+}
+
+img{
+  width:200px;
+  border-radius:15px;
+  margin:10px;
+  border:2px solid white;
+}
+
+#letter{
+  background:#3b2f2f;
+  padding:20px;
+  border-radius:15px;
+  border:2px solid #d4a373;
+  max-width:600px;
+  margin:auto;
+  font-style:italic;
+  text-align:left;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- FLOATING HEARTS -->
+<script>
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},400);
+</script>
+
+<!-- LOCK -->
+<div id="lock">
+<h2>Enter Code 🔐</h2>
+
+<div id="display">____</div>
+
+<p class="hint">to unlock write the date of war and the year</p>
+
+<div>
+<button onclick="press(1)">1</button>
+<button onclick="press(2)">2</button>
+<button onclick="press(3)">3</button><br>
+<button onclick="press(4)">4</button>
+<button onclick="press(5)">5</button>
+<button onclick="press(6)">6</button><br>
+<button onclick="press(7)">7</button>
+<button onclick="press(8)">8</button>
+<button onclick="press(9)">9</button><br>
+<button onclick="clearCode()">C</button>
+<button onclick="press(0)">0</button>
+<button onclick="check()">OK</button>
+</div>
+</div>
+
+<!-- MEMORIES -->
+<div id="memories" class="section">
+
+<div class="card">
+<h3>Camera Memory 📸</h3>
+<button onclick="showPic()">📷 Click</button>
+<div id="pic"></div>
+</div>
+
+<button onclick="openLetter()">Open Letter 💌</button>
+<button onclick="playSong()">Play Song 🎶</button>
+
+</div>
+
+<!-- LETTER -->
+<div id="letterSection" class="section">
+<div id="letter">
+
+<p><b>Fatima Noor 💖</b></p>
+
+<p>
+Yeh letter main kisi aam alfaaz mein nahi likh rahi… yeh woh ehsaas hain jo bohat arsay se dil mein chupay huay thay, aur aaj lafzon ki shakal mein aap tak pohanch rahe hain. Shayad yeh meri taraf se aakhri tareeqa hai sab kuch samjhanay ka.
+</p>
+
+<p>
+Hum dono ki friendship ek silent si duniya thi… jahan zyada shor nahi hota tha, lekin feelings bohat gehri hoti thi. Hum ek doosre ko adores karte thay, bina kisi shart ke, bina kisi label ke. Roz ki chats, choti choti smiles, pictures ka exchange, aur woh har din ki happiness jo sirf hum dono ke beech hoti thi… sab kuch itna real tha ke lagta tha yeh kabhi khatam nahi ho sakta.
+</p>
+
+<p>
+Main kabhi yeh friendship end nahi karti Fatima… agar hamara love same rehta, trust same rehta, aur hum waise hi ek doosre ke liye hote jaise shuru mein thay.
+</p>
+
+<p>
+Fatima Noor… yeh ending woh nahi thi jo hum ne chahi thi, na woh jo hum deserve karte thay. Aap meri happiness thi… aur ab sirf ek yaad ban kar reh gayi hain.
+</p>
+
+<p><b>— Ayemen 💖</b></p>
+
+</div>
+</div>
+
+<audio id="song">
+<source src="Mil Ke Baithange Angrej Amrinder Gill Full Music Video.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+let input="";
+
+function press(n){
+if(input.length<4){
+input+=n;
+document.getElementById("display").innerText=input;
+}
+}
+
+function clearCode(){
+input="";
+document.getElementById("display").innerText="____";
+}
+
+function check(){
+if(input==="0825"){
+document.getElementById("lock").style.display="none";
+document.getElementById("memories").classList.add("active");
+}
+else{
+alert("Wrong Code 💔");
+clearCode();
+}
+}
+
+function showPic(){
+document.getElementById("pic").innerHTML=
+"<img src='https://via.placeholder.com/200'><p>Memory 💖</p>";
+}
+
+function openLetter(){
+document.getElementById("memories").classList.remove("active");
+document.getElementById("letterSection").classList.add("active");
+}
+
+function playSong(){
+document.getElementById("song").play();
+}
+
+</script>
+
+</body>
+</html>
