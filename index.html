@@ -2,99 +2,131 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Memories</title>
+<title>Aesthetic Memories Website</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(120deg,#000,#2b0000,#ffb6c1);
+  background:#0b0b0b;
   color:white;
-  text-align:center;
   overflow-x:hidden;
 }
 
-/* FLOATING HEARTS */
+.page{
+  display:none;
+  height:100vh;
+  padding:20px;
+  text-align:center;
+}
+.active{display:block;}
+
 .heart{
   position:fixed;
   bottom:-10px;
   color:pink;
   font-size:18px;
-  animation:floatUp 6s linear infinite;
+  animation:float 6s linear infinite;
   opacity:0.7;
 }
-
-@keyframes floatUp{
+@keyframes float{
   0%{transform:translateY(0);opacity:1;}
   100%{transform:translateY(-100vh);opacity:0;}
 }
 
-/* LOCK SCREEN */
-#lock{
-  padding:30px;
-}
-
-#display{
-  font-size:32px;
-  background:#111;
-  padding:15px;
-  width:160px;
-  margin:10px auto;
-  border-radius:10px;
-  letter-spacing:5px;
-}
-
 button{
-  padding:15px;
+  padding:10px 15px;
   margin:5px;
-  width:60px;
-  font-size:18px;
   border:none;
   border-radius:10px;
   background:#ff4d6d;
   color:white;
-  box-shadow:0 0 10px pink;
   cursor:pointer;
 }
 
-.hint{color:#ffb3c6;}
-
-.section{display:none;padding:20px;}
-.active{display:block;}
-
-.card{
-  background:rgba(255,255,255,0.1);
-  padding:20px;
+#display{
+  font-size:30px;
+  background:#111;
+  padding:10px;
+  width:150px;
   margin:10px auto;
-  max-width:500px;
-  border-radius:15px;
-  border:1px solid pink;
+  border-radius:10px;
 }
 
-img{
+.instax{
+  background:white;
+  color:black;
   width:200px;
-  border-radius:15px;
+  margin:10px auto;
+  padding:10px;
+  border-radius:10px;
+}
+.instax img{width:100%;}
+
+.gallery img{
+  width:120px;
   margin:10px;
+  border-radius:10px;
   border:2px solid white;
+  cursor:pointer;
 }
 
-#letter{
+#viewer{
+  width:80%;
+  margin:10px auto;
+  border-radius:15px;
+}
+
+.letter{
   background:#3b2f2f;
   padding:20px;
   border-radius:15px;
-  border:2px solid #d4a373;
-  max-width:600px;
+  max-width:700px;
   margin:auto;
-  font-style:italic;
   text-align:left;
+  line-height:1.6;
 }
 
+/* CAT ANIMATION */
+.cat-area{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  display:none;
+}
+.cat{
+  position:absolute;
+  font-size:40px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.cat.left{
+  left:40%;
+  animation:moveLeft 4s forwards;
+}
+.cat.right{
+  right:40%;
+  animation:moveRight 4s forwards;
+}
+
+@keyframes moveLeft{
+  0%{left:50%;}
+  100%{left:5%;}
+}
+@keyframes moveRight{
+  0%{right:50%;}
+  100%{right:5%;}
+}
 </style>
 </head>
 
 <body>
 
-<!-- FLOATING HEARTS -->
 <script>
 setInterval(()=>{
   let h=document.createElement("div");
@@ -106,15 +138,24 @@ setInterval(()=>{
 },400);
 </script>
 
-<!-- LOCK -->
-<div id="lock">
-<h2>Enter Code 🔐</h2>
+<script>
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+</script>
 
+<!-- CAT EFFECT AREA -->
+<div class="cat-area" id="cats">
+  <div class="cat left">🐱</div>
+  <div class="cat right">🐱</div>
+</div>
+
+<!-- LOCK -->
+<div id="lock" class="page active">
+<h2>Enter Code 🔐</h2>
 <div id="display">____</div>
 
-<p class="hint">to unlock write the date of war and the year</p>
-
-<div>
 <button onclick="press(1)">1</button>
 <button onclick="press(2)">2</button>
 <button onclick="press(3)">3</button><br>
@@ -127,95 +168,159 @@ setInterval(()=>{
 <button onclick="clearCode()">C</button>
 <button onclick="press(0)">0</button>
 <button onclick="check()">OK</button>
+
+<p>Hint: write war date</p>
 </div>
+
+<!-- CAMERA -->
+<div id="camera" class="page">
+<h2>Instax Camera 📸</h2>
+<div class="instax">
+<img id="camimg" src="https://via.placeholder.com/200">
+<p>Click for capture</p>
+</div>
+<button onclick="capture()">Click 📷</button>
+<br>
+<button onclick="go('lock')">Back</button>
+<button onclick="go('gallery')">Next</button>
+</div>
+
+<!-- GALLERY -->
+<div id="gallery" class="page">
+<h2>Gallery 🎞️</h2>
+<div class="gallery">
+<img src="https://via.placeholder.com/120" onclick="view(this.src)">
+<img src="https://via.placeholder.com/121" onclick="view(this.src)">
+<img src="https://via.placeholder.com/122" onclick="view(this.src)">
+</div>
+<img id="viewer">
+<br>
+<button onclick="go('camera')">Back</button>
+<button onclick="go('gifts')">Next</button>
+</div>
+
+<!-- GIFTS -->
+<div id="gifts" class="page">
+<h2>Here are goodbye gifts 🎁</h2>
+<button onclick="go('song')">Song 🎶</button>
+<button onclick="go('memories')">Memories 💖</button>
+<button onclick="go('letter')">Letter 💌</button>
+<br>
+<button onclick="go('gallery')">Back</button>
+</div>
+
+<!-- SONG -->
+<div id="song" class="page">
+<h2>Song 🎶</h2>
+<button onclick="playSong()">Play</button>
+
+<audio id="audio">
+  <source src="Mil Ke Baithange  Angrej  Amrinder Gill  Full Music Video.mp3" type="audio/mp3">
+</audio>
+
+<br>
+<button onclick="go('gifts')">Back</button>
 </div>
 
 <!-- MEMORIES -->
-<div id="memories" class="section">
-
-<div class="card">
-<h3>Camera Memory 📸</h3>
-<button onclick="showPic()">📷 Click</button>
-<div id="pic"></div>
-</div>
-
-<button onclick="openLetter()">Open Letter 💌</button>
-<button onclick="playSong()">Play Song 🎶</button>
-
+<div id="memories" class="page">
+<h2>Memories 💖</h2>
+<p>Every smile, every chat, every moment stays forever...</p>
+<button onclick="go('gifts')">Back</button>
 </div>
 
 <!-- LETTER -->
-<div id="letterSection" class="section">
-<div id="letter">
-
-<p><b>Fatima Noor 💖</b></p>
-
+<div id="letter" class="page">
+<h2>Letter 💌</h2>
+<div class="letter">
 <p>
-Yeh letter main kisi aam alfaaz mein nahi likh rahi… yeh woh ehsaas hain jo bohat arsay se dil mein chupay huay thay, aur aaj lafzon ki shakal mein aap tak pohanch rahe hain. Shayad yeh meri taraf se aakhri tareeqa hai sab kuch samjhanay ka.
-</p>
-
-<p>
+Fatima Noor,
+<br><br>
+Yeh khat main kisi aam alfaaz mein nahi likh rahi… yeh woh ehsaas hain jo bohat arsay se dil mein chupay huay thay, aur aaj lafzon ki shakal mein aap tak pohanch rahe hain. Shayad yeh meri taraf se aakhri tareeqa hai sab kuch samjhanay ka.
+<br><br>
 Hum dono ki friendship ek silent si duniya thi… jahan zyada shor nahi hota tha, lekin feelings bohat gehri hoti thi. Hum ek doosre ko adores karte thay, bina kisi shart ke, bina kisi label ke. Roz ki chats, choti choti smiles, pictures ka exchange, aur woh har din ki happiness jo sirf hum dono ke beech hoti thi… sab kuch itna real tha ke lagta tha yeh kabhi khatam nahi ho sakta.
-</p>
-
-<p>
-Main kabhi yeh friendship end nahi karti Fatima… agar hamara love same rehta, trust same rehta, aur hum waise hi ek doosre ke liye hote jaise shuru mein thay.
-</p>
-
-<p>
+<br><br>
+Main kabhi yeh friendship end nahi karti Fatima… agar hamara love same rehta, trust same rehta, aur hum waise hi ek doosre ke liye hote jaise shuru mein thay. Humne promise kiya tha ke hum saath rahenge, graduate karenge, har stage ek doosre ke saath cross karenge. Phir yeh sab itna kaise bikhar gaya?
+<br><br>
+Fatima… jab aap ne kaha “badal gayi main”, us ek line ne mujhe andar se tod diya. Main us waqt sirf hurt nahi hui thi… main khamosh ho gayi thi. Mujhe laga tha ke hum dono ek dusre ko sab se zyada samajhte hain, phir yeh change kahan se aa gaya?
+<br><br>
+Yeh sab nahi hona chahiye tha. Yeh ending hum ne kabhi nahi chahi thi, na deserve ki thi.
+<br><br>
+Main ne aap ki presence ko bohat crave kiya Fatima… bohat zyada. Aap ka saath, aap ka support, aap ka hasna, aap ka muskurana… sab bohat yaad aata raha. Main ne bohat kuch akele face kiya… bohat kuch. Aur har us lamhe mein mujhe aap ki bohat zarurat mehsoos hui.
+<br><br>
+Aap meri sirf friend nahi thi… aap mere soul ka hissa ban chuki thi.
+<br><br>
+Yaad hai CMH mein jab hum internship ke liye gaye thay, aap ne kaha tha: “dil to already exchange ho chuke hain, aap ka mere paas hai aur mera aap ke paas hai.” Us waqt mujhe laga tha ke hum kabhi door nahi honge, hum safe hain, hum strong hain.
+<br><br>
+Phir yeh sab kyun badal gaya Fatima? Jab mujhe aap ki sab se zyada zarurat thi, tab aap kyun badal gayin? Main aap ki thi… aur main ne samjha tha ke aap meri hain.
+<br><br>
+Jab aap ne kaha tha “sirf aur sirf meri Ayemen”, aur main ne aap ko reassurance di thi… woh sab sach tha na? Fatima ne bhi likha tha: “sirf aap ki Fatima, sab kuch.” Phir yeh sab itna door kaise ho gaya?
+<br><br>
+Aap meri happiness thi… meri zindagi ka sab se khubsurat hissa. Aur ab lagta hai jaise woh happiness mujh se cheen li gayi ho.
+<br><br>
+Aur sab se bara shikwa yeh hai… ke third insan kyu aaya? Hassan… kyu aaya? Kyu us ki wajah se woh dosti toot gayi jo hum ne apni rooh se banayi thi? Kyu hum dono ke beech itna distance aa gaya jab hum ek waqt par ek dusre ke “sab kuch” thay?
+<br><br>
+Main ne aap ko bohat dafa bachane ki koshish ki Fatima… har baar wapas aayi, har baar samjhaya, har baar realize karwaya ke hum kya kho rahe hain. Lekin shayad main akeli thi jo bachana chahti thi.
+<br><br>
+Aap ne roka hi nahi… aur yeh baat sab se zyada hurt karti hai. Main ne pyaar maang kar bhi pyaar nahi paya.
+<br><br>
+Yeh friendship jo hum ne apni sab se strong cheez samjhi thi… woh sab se bada lesson ban gayi.
+<br><br>
+Aur Fatima… yeh website, yeh sab… yeh ek aisa gesture hai jo hamesha zinda rahega. Kuch aisa jo sirf yaad nahi, ek nishani ban kar reh jayega hamari story ki.
+<br><br>
+Main aaj, 28 April ko yeh website bana rahi hoon… lekin main isay aap ko last day of uni par send karungi. Shayad us din tak main apne lafzon ko aur samajh loon, aur shayad aap bhi.
+<br><br>
 Fatima Noor… yeh ending woh nahi thi jo hum ne chahi thi, na woh jo hum deserve karte thay. Aap meri happiness thi… aur ab sirf ek yaad ban kar reh gayi hain.
+<br><br>
+— Ayemen
 </p>
-
-<p><b>— Ayemen 💖</b></p>
-
 </div>
+<br>
+<button onclick="go('gifts')">Back</button>
 </div>
-
-<audio id="song">
-<source src="Mil Ke Baithange Angrej Amrinder Gill Full Music Video.mp3" type="audio/mp3">
-</audio>
 
 <script>
-
 let input="";
 
 function press(n){
-if(input.length<4){
-input+=n;
-document.getElementById("display").innerText=input;
-}
+  if(input.length<4){
+    input+=n;
+    document.getElementById('display').innerText=input;
+  }
 }
 
 function clearCode(){
-input="";
-document.getElementById("display").innerText="____";
+  input="";
+  document.getElementById('display').innerText="____";
 }
 
 function check(){
-if(input==="0825"){
-document.getElementById("lock").style.display="none";
-document.getElementById("memories").classList.add("active");
-}
-else{
-alert("Wrong Code 💔");
-clearCode();
-}
+  if(input==="0825"){
+    go('camera');
+  } else {
+    alert('Wrong 💔');
+    clearCode();
+  }
 }
 
-function showPic(){
-document.getElementById("pic").innerHTML=
-"<img src='https://via.placeholder.com/200'><p>Memory 💖</p>";
+function capture(){
+  document.getElementById('camimg').src="https://via.placeholder.com/200/ff99aa";
 }
 
-function openLetter(){
-document.getElementById("memories").classList.remove("active");
-document.getElementById("letterSection").classList.add("active");
+function view(src){
+  document.getElementById('viewer').src=src;
 }
 
 function playSong(){
-document.getElementById("song").play();
+  document.getElementById('audio').play();
+  document.getElementById('cats').style.display="block";
 }
 
+// cats animation trigger
+const audio=document.getElementById('audio');
+audio.addEventListener('ended',()=>{
+  document.getElementById('cats').style.display="none";
+});
 </script>
 
 </body>
