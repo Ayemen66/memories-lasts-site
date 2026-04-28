@@ -8,7 +8,7 @@
 body{
   margin:0;
   font-family:Arial;
-  background:#0b0b0b;
+  background:linear-gradient(135deg,#071a12,#0b2e1a,#0f3d22);
   color:white;
   overflow-x:hidden;
 }
@@ -16,7 +16,7 @@ body{
 .page{
   display:none;
   height:100vh;
-  padding:20px;
+  padding:30px;
   text-align:center;
 }
 .active{display:block;}
@@ -24,8 +24,8 @@ body{
 .heart{
   position:fixed;
   bottom:-10px;
-  color:pink;
-  font-size:18px;
+  color:#7CFF9B;
+  font-size:22px;
   animation:float 6s linear infinite;
   opacity:0.7;
 }
@@ -35,92 +35,101 @@ body{
 }
 
 button{
-  padding:10px 15px;
-  margin:5px;
+  padding:18px 30px;
+  margin:10px;
   border:none;
-  border-radius:10px;
-  background:#ff4d6d;
+  border-radius:18px;
+  background:linear-gradient(135deg,#1db954,#0f7a3a);
   color:white;
   cursor:pointer;
+  font-size:18px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.4);
+  transition:0.3s;
+}
+button:hover{
+  transform:scale(1.05);
 }
 
 #display{
-  font-size:30px;
-  background:#111;
-  padding:10px;
-  width:150px;
-  margin:10px auto;
-  border-radius:10px;
+  font-size:40px;
+  background:#0b1f14;
+  padding:15px;
+  width:220px;
+  margin:15px auto;
+  border-radius:15px;
+  border:2px solid #1db954;
 }
 
 .instax{
   background:white;
   color:black;
-  width:200px;
-  margin:10px auto;
-  padding:10px;
-  border-radius:10px;
+  width:320px;
+  margin:20px auto;
+  padding:15px;
+  border-radius:15px;
 }
 .instax img{width:100%;}
 
 .gallery img{
-  width:120px;
-  margin:10px;
-  border-radius:10px;
-  border:2px solid white;
+  width:180px;
+  margin:15px;
+  border-radius:15px;
+  border:3px solid #7CFF9B;
   cursor:pointer;
 }
 
 #viewer{
-  width:80%;
-  margin:10px auto;
-  border-radius:15px;
+  width:60%;
+  margin:20px auto;
+  border-radius:20px;
 }
 
 .letter{
-  background:#3b2f2f;
-  padding:20px;
-  border-radius:15px;
-  max-width:700px;
+  background:rgba(0,0,0,0.4);
+  padding:25px;
+  border-radius:20px;
+  max-width:750px;
   margin:auto;
   text-align:left;
-  line-height:1.6;
+  line-height:1.8;
+  border:1px solid #1db954;
 }
 
-/* CAT ANIMATION */
-.cat-area{
+/* HANDS ANIMATION */
+.hands-area{
   position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
   pointer-events:none;
-  overflow:hidden;
   display:none;
 }
-.cat{
+
+.hand{
   position:absolute;
-  font-size:40px;
+  font-size:70px;
   top:50%;
   transform:translateY(-50%);
 }
 
-.cat.left{
-  left:40%;
-  animation:moveLeft 4s forwards;
+.hand.left{
+  left:45%;
+  animation:moveLeft 5s forwards;
 }
-.cat.right{
-  right:40%;
-  animation:moveRight 4s forwards;
+.hand.right{
+  right:45%;
+  animation:moveRight 5s forwards;
 }
 
 @keyframes moveLeft{
   0%{left:50%;}
-  100%{left:5%;}
+  100%{left:10%;}
 }
+
 @keyframes moveRight{
   0%{right:50%;}
-  100%{right:5%;}
+  100%{right:10%;}
 }
 </style>
 </head>
@@ -131,12 +140,17 @@ button{
 setInterval(()=>{
   let h=document.createElement("div");
   h.className="heart";
-  h.innerHTML="💖";
+  h.innerHTML="💚";
   h.style.left=Math.random()*100+"vw";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
 },400);
 </script>
+
+<div class="hands-area" id="hands">
+  <div class="hand left">🤝</div>
+  <div class="hand right">🤝</div>
+</div>
 
 <script>
 function go(page){
@@ -144,12 +158,6 @@ function go(page){
   document.getElementById(page).classList.add('active');
 }
 </script>
-
-<!-- CAT EFFECT AREA -->
-<div class="cat-area" id="cats">
-  <div class="cat left">🐱</div>
-  <div class="cat right">🐱</div>
-</div>
 
 <!-- LOCK -->
 <div id="lock" class="page active">
@@ -168,16 +176,13 @@ function go(page){
 <button onclick="clearCode()">C</button>
 <button onclick="press(0)">0</button>
 <button onclick="check()">OK</button>
-
-<p>Hint: write war date</p>
 </div>
 
 <!-- CAMERA -->
 <div id="camera" class="page">
 <h2>Instax Camera 📸</h2>
 <div class="instax">
-<img id="camimg" src="https://via.placeholder.com/200">
-<p>Click for capture</p>
+<img id="camimg" src="https://via.placeholder.com/300">
 </div>
 <button onclick="capture()">Click 📷</button>
 <br>
@@ -189,9 +194,9 @@ function go(page){
 <div id="gallery" class="page">
 <h2>Gallery 🎞️</h2>
 <div class="gallery">
-<img src="https://via.placeholder.com/120" onclick="view(this.src)">
-<img src="https://via.placeholder.com/121" onclick="view(this.src)">
-<img src="https://via.placeholder.com/122" onclick="view(this.src)">
+<img src="https://via.placeholder.com/180" onclick="view(this.src)">
+<img src="https://via.placeholder.com/181" onclick="view(this.src)">
+<img src="https://via.placeholder.com/182" onclick="view(this.src)">
 </div>
 <img id="viewer">
 <br>
@@ -203,30 +208,23 @@ function go(page){
 <div id="gifts" class="page">
 <h2>Here are goodbye gifts 🎁</h2>
 <button onclick="go('song')">Song 🎶</button>
-<button onclick="go('memories')">Memories 💖</button>
+<button onclick="go('memories')">Memories 💚</button>
 <button onclick="go('letter')">Letter 💌</button>
-<br>
-<button onclick="go('gallery')">Back</button>
 </div>
 
 <!-- SONG -->
 <div id="song" class="page">
 <h2>Song 🎶</h2>
 <button onclick="playSong()">Play</button>
-
 <audio id="audio">
   <source src="Mil Ke Baithange  Angrej  Amrinder Gill  Full Music Video.mp3" type="audio/mp3">
 </audio>
-
-<br>
-<button onclick="go('gifts')">Back</button>
 </div>
 
 <!-- MEMORIES -->
 <div id="memories" class="page">
-<h2>Memories 💖</h2>
-<p>Every smile, every chat, every moment stays forever...</p>
-<button onclick="go('gifts')">Back</button>
+<h2>Memories 💚</h2>
+<p>Every moment stays alive forever...</p>
 </div>
 
 <!-- LETTER -->
@@ -275,52 +273,16 @@ Fatima Noor… yeh ending woh nahi thi jo hum ne chahi thi, na woh jo hum deserv
 — Ayemen
 </p>
 </div>
-<br>
-<button onclick="go('gifts')">Back</button>
 </div>
 
 <script>
 let input="";
-
-function press(n){
-  if(input.length<4){
-    input+=n;
-    document.getElementById('display').innerText=input;
-  }
-}
-
-function clearCode(){
-  input="";
-  document.getElementById('display').innerText="____";
-}
-
-function check(){
-  if(input==="0825"){
-    go('camera');
-  } else {
-    alert('Wrong 💔');
-    clearCode();
-  }
-}
-
-function capture(){
-  document.getElementById('camimg').src="https://via.placeholder.com/200/ff99aa";
-}
-
-function view(src){
-  document.getElementById('viewer').src=src;
-}
-
-function playSong(){
-  document.getElementById('audio').play();
-  document.getElementById('cats').style.display="block";
-}
-
-// cats animation trigger
-const audio=document.getElementById('audio');
-audio.addEventListener('ended',()=>{
-  document.getElementById('cats').style.display="none";
-});
+function press(n){if(input.length<4){input+=n;document.getElementById('display').innerText=input;}}
+function clearCode(){input="";document.getElementById('display').innerText="____";}
+function check(){if(input==="0825"){go('camera');}else{alert('Wrong 💔');clearCode();}}
+function capture(){document.getElementById('camimg').src="https://via.placeholder.com/300/99ffcc";}
+function view(src){document.getElementById('viewer').src=src;}
+function playSong(){document.getElementById('audio').play();document.getElementById('hands').style.display="block";}
 </script>
 
 </body>
